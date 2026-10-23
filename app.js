@@ -168,3 +168,24 @@ function updateScroll(){
 window.addEventListener('scroll',()=>{if(!scrollPending){requestAnimationFrame(updateScroll);scrollPending=true;}},{passive:true});
 $$('.year-nav button').forEach((b,i)=>b.addEventListener('click',()=>{const j=$('.journey');window.scrollTo({top:j.getBoundingClientRect().top+scrollY+(j.offsetHeight-innerHeight)*(i+.35)/chapters.length,behavior:motionOff?'instant':'smooth'});}));
 updateScroll();
+
+// Browse the verified toolbox without changing the page's scroll position.
+const toolCollections = $$('[data-tool-group]');
+const toolFilters = $$('[data-tool-filter]');
+$('.tool-filters').hidden = false;
+toolFilters.forEach(button => button.addEventListener('click', () => {
+  const filter = button.dataset.toolFilter;
+  toolFilters.forEach(item => item.setAttribute('aria-pressed', String(item === button)));
+  let visibleTools = 0, visibleCollections = 0;
+  toolCollections.forEach(group => {
+    group.hidden = filter !== 'all' && group.dataset.toolGroup !== filter;
+    if (!group.hidden) {
+      visibleTools += group.querySelectorAll('.tech-card').length;
+      visibleCollections++;
+      if (!motionOff) group.animate([{opacity:.35,transform:'translateY(8px)'},{opacity:1,transform:'translateY(0)'}],{duration:300,easing:'ease-out'});
+    }
+  });
+  $('.tool-results').textContent = filter === 'all'
+    ? `Showing all ${visibleTools} tools across ${visibleCollections} collections`
+    : `Showing ${visibleTools} tools in ${button.textContent.trim()}`;
+}));
