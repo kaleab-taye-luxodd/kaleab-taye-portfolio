@@ -79,26 +79,55 @@ $('.project-track').innerHTML=projects.map(p=>`<article class="project-card" dat
 $('.project-dots').innerHTML=projects.map(p=>`<button aria-label="Show ${p.name}" aria-pressed="false"></button>`).join('');
 $('#project-total').textContent=`01 — ${String(projects.length).padStart(2,'0')}`;
 let projectIndex=0;
-const cards=$$('.project-card');
-function selectProject(index){
-  projectIndex=(index+cards.length)%cards.length;
-  const gap=parseFloat(getComputedStyle($('.project-track')).gap)||0;
-  $('.project-track').style.transform=`translateX(${-projectIndex*(cards[0].getBoundingClientRect().width+gap)}px)`;
-  $('#project-count').textContent=`${String(projectIndex+1).padStart(2,'0')} / ${String(cards.length).padStart(2,'0')}`;
-  $('.work').dataset.world=projects[projectIndex].world;
-  $$('.project-dots button').forEach((b,i)=>{b.classList.toggle('active',i===projectIndex);b.setAttribute('aria-pressed',String(i===projectIndex));});
-  cards.forEach((c,i)=>{c.inert=i!==projectIndex;c.setAttribute('aria-hidden',String(i!==projectIndex));});
+const cards=$$('.project-card'), carousel=$('.carousel');
+const projectOffset=index=>cards[index].offsetLeft-cards[0].offsetLeft;
+function nearestProject(){
+  return cards.reduce((best,card,index)=>Math.abs(projectOffset(index)-carousel.scrollLeft)<Math.abs(projectOffset(best)-carousel.scrollLeft)?index:best,0);
+}
+function syncProject(index){
+  projectIndex=index;
+  $('#project-count').textContent=`${String(index+1).padStart(2,'0')} / ${String(cards.length).padStart(2,'0')}`;
+  $('.work').dataset.world=projects[index].world;
+  $$('.project-dots button').forEach((button,i)=>{button.classList.toggle('active',i===index);button.setAttribute('aria-pressed',String(i===index));});
+}
+function selectProject(index,immediate=false){
+  clearTimeout(projectWheelTimer);
+  carousel.classList.remove('is-wheeling');
+  const target=(index+cards.length)%cards.length;
+  syncProject(target);
+  carousel.scrollTo({left:projectOffset(target),behavior:immediate||motionOff?'instant':'smooth'});
 }
 $('#prev-project').addEventListener('click',()=>selectProject(projectIndex-1));
 $('#next-project').addEventListener('click',()=>selectProject(projectIndex+1));
-$$('.project-dots button').forEach((b,i)=>b.addEventListener('click',()=>selectProject(i)));
-$('.carousel').addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key==='ArrowLeft'){e.preventDefault();selectProject(projectIndex+(e.key==='ArrowRight'?1:-1));}});
-let swipeStart, suppressProjectClick=false;
-$('.carousel').addEventListener('pointerdown',e=>{swipeStart={x:e.clientX,y:e.clientY};});
-$('.carousel').addEventListener('pointerup',e=>{if(!swipeStart)return;const dx=e.clientX-swipeStart.x,dy=e.clientY-swipeStart.y;if(Math.abs(dx)>60&&Math.abs(dx)>Math.abs(dy)*1.4){selectProject(projectIndex+(dx<0?1:-1));suppressProjectClick=true;setTimeout(()=>suppressProjectClick=false,0);}});
-$('.carousel').addEventListener('click',e=>{if(suppressProjectClick){e.preventDefault();e.stopPropagation();}},true);
-window.addEventListener('resize',()=>selectProject(projectIndex));
-selectProject(0);
+$$('.project-dots button').forEach((button,index)=>button.addEventListener('click',()=>selectProject(index)));
+carousel.addEventListener('keydown',event=>{
+  if(!['ArrowRight','ArrowLeft','Home','End'].includes(event.key))return;
+  event.preventDefault();
+  selectProject(event.key==='Home'?0:event.key==='End'?cards.length-1:projectIndex+(event.key==='ArrowRight'?1:-1));
+});
+let projectScrollFrame=0;
+carousel.addEventListener('scroll',()=>{
+  if(projectScrollFrame)return;
+  projectScrollFrame=requestAnimationFrame(()=>{syncProject(nearestProject());projectScrollFrame=0;});
+},{passive:true});
+// A vertical mouse wheel travels through the rail; its ends return control to the page.
+let projectWheelTimer;
+carousel.addEventListener('wheel',event=>{
+  if(event.ctrlKey||event.shiftKey||Math.abs(event.deltaX)>Math.abs(event.deltaY)||!event.deltaY)return;
+  const delta=event.deltaY*(event.deltaMode===1?20:event.deltaMode===2?carousel.clientWidth:1);
+  const max=carousel.scrollWidth-carousel.clientWidth;
+  if(max<1||(delta<0&&carousel.scrollLeft<=1)||(delta>0&&carousel.scrollLeft>=max-1))return;
+  event.preventDefault();
+  carousel.classList.add('is-wheeling');
+  carousel.scrollLeft=Math.max(0,Math.min(max,carousel.scrollLeft+delta));
+  clearTimeout(projectWheelTimer);
+  projectWheelTimer=setTimeout(()=>{
+    carousel.classList.remove('is-wheeling');
+    selectProject(nearestProject());
+  },160);
+},{passive:false});
+window.addEventListener('resize',()=>selectProject(projectIndex,true));
+selectProject(0,true);
 $('.engagement-grid').innerHTML=engagements.map((e,i)=>`<article class="engagement-card" id="engagement-${i}"><span class="engagement-number">${String(i+1).padStart(2,'0')} / ${e.role}</span><h3>${e.title}</h3><p>${e.text}</p><div class="project-tags">${tagMarkup(e.tags)}</div></article>`).join('');
 $('.contract-list').innerHTML=contracts.map(c=>`<article class="contract"><div><span class="contract-status"><i class="live-dot"></i>${c.type} · ${c.date}</span><h3>${c.title}</h3><p>${c.copy}</p></div><div class="project-tags">${tagMarkup(c.tags)}</div><a href="https://www.upwork.com/freelancers/~011af220bdfdcacc6f" target="_blank" rel="noopener noreferrer" aria-label="View ${c.title} on Upwork">↗</a></article>`).join('');
 

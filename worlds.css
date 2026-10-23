@@ -30,3 +30,12 @@
 [data-world=angels]{--world:#5cddd0;--world-rgb:55,194,178;--world-deep:#0d2321}
 .project-source-links{margin-top:25px;padding-top:20px;border-top:1px solid rgba(var(--world-rgb),.25)}
 .project-source-links>span{font-size:10px;line-height:1.7;color:#e6daefb3}.project-source-links>div{display:flex;flex-wrap:wrap;gap:9px 14px;margin-top:12px}.project-source-links a{font-size:11px;color:var(--world);line-height:1.8;text-underline-offset:4px}.project-source-links a:hover{text-decoration:underline}.project-source-links[hidden]{display:none}
+
+/* Native horizontal project browsing, with the same controls and project worlds. */
+.carousel{overflow-x:auto;overflow-y:hidden;touch-action:pan-x pan-y pinch-zoom;cursor:auto;margin-inline:calc(-1 * var(--pad));padding:12px var(--pad) 25px;scroll-padding-inline:var(--pad);scroll-snap-type:x mandatory;scrollbar-width:thin;scrollbar-color:#a88ab966 #ffffff08;overscroll-behavior-x:contain}
+.carousel:active{cursor:auto}.carousel::-webkit-scrollbar{height:5px}.carousel::-webkit-scrollbar-track{background:#ffffff08;border-radius:10px}.carousel::-webkit-scrollbar-thumb{background:#a88ab966;border-radius:10px}.carousel::-webkit-scrollbar-thumb:hover{background:#bc9ed1}
+.project-track{--project-peek:15%;--project-gap:28px;position:relative;width:100%;gap:var(--project-gap);padding-inline-end:0;transform:none;transition:none;will-change:auto}
+.project-track::after{content:'';flex:0 0 calc(var(--project-peek) + var(--pad) - var(--project-gap))}
+.project-card{scroll-snap-align:start}.carousel.is-wheeling{scroll-snap-type:none}
+@media(max-width:1000px){.project-track{--project-peek:6%}}
+@media(max-width:640px){.project-track{--project-gap:16px}}
