@@ -81,8 +81,8 @@ $('#project-total').textContent=`01 — ${String(projects.length).padStart(2,'0'
 let projectIndex=0;
 const cards=$$('.project-card'), carousel=$('.carousel');
 const projectOffset=index=>cards[index].offsetLeft-cards[0].offsetLeft;
-function nearestProject(){
-  return cards.reduce((best,card,index)=>Math.abs(projectOffset(index)-carousel.scrollLeft)<Math.abs(projectOffset(best)-carousel.scrollLeft)?index:best,0);
+function nearestProject(left=carousel.scrollLeft){
+  return cards.reduce((best,card,index)=>Math.abs(projectOffset(index)-left)<Math.abs(projectOffset(best)-left)?index:best,0);
 }
 function syncProject(index){
   projectIndex=index;
@@ -90,41 +90,60 @@ function syncProject(index){
   $('.work').dataset.world=projects[index].world;
   $$('.project-dots button').forEach((button,i)=>{button.classList.toggle('active',i===index);button.setAttribute('aria-pressed',String(i===index));});
 }
+let projectDestination=null, projectWheelTarget=null;
 function selectProject(index,immediate=false){
   clearTimeout(projectWheelTimer);
   carousel.classList.remove('is-wheeling');
+  projectWheelTarget=null;
   const target=(index+cards.length)%cards.length;
+  projectDestination=immediate||motionOff?null:target;
   syncProject(target);
   carousel.scrollTo({left:projectOffset(target),behavior:immediate||motionOff?'instant':'smooth'});
 }
-$('#prev-project').addEventListener('click',()=>selectProject(projectIndex-1));
-$('#next-project').addEventListener('click',()=>selectProject(projectIndex+1));
+$('#prev-project').addEventListener('click',()=>selectProject((projectDestination??projectIndex)-1));
+$('#next-project').addEventListener('click',()=>selectProject((projectDestination??projectIndex)+1));
 $$('.project-dots button').forEach((button,index)=>button.addEventListener('click',()=>selectProject(index)));
 carousel.addEventListener('keydown',event=>{
   if(!['ArrowRight','ArrowLeft','Home','End'].includes(event.key))return;
   event.preventDefault();
-  selectProject(event.key==='Home'?0:event.key==='End'?cards.length-1:projectIndex+(event.key==='ArrowRight'?1:-1));
+  selectProject(event.key==='Home'?0:event.key==='End'?cards.length-1:(projectDestination??projectIndex)+(event.key==='ArrowRight'?1:-1));
 });
 let projectScrollFrame=0;
 carousel.addEventListener('scroll',()=>{
   if(projectScrollFrame)return;
-  projectScrollFrame=requestAnimationFrame(()=>{syncProject(nearestProject());projectScrollFrame=0;});
+  projectScrollFrame=requestAnimationFrame(()=>{
+    if(projectDestination!==null&&Math.abs(carousel.scrollLeft-projectOffset(projectDestination))<2)projectDestination=null;
+    if(projectDestination===null)syncProject(nearestProject());
+    const max=carousel.scrollWidth-carousel.clientWidth;
+    $('.project-scroll-meter span').style.transform=`scaleX(${max>0?Math.max(0,Math.min(1,carousel.scrollLeft/max)):0})`;
+    projectScrollFrame=0;
+  });
 },{passive:true});
+function interruptProjectScroll(){
+  if(projectDestination===null&&projectWheelTarget===null)return;
+  clearTimeout(projectWheelTimer);
+  carousel.scrollTo({left:carousel.scrollLeft,behavior:'instant'});
+  projectDestination=null;projectWheelTarget=null;
+  carousel.classList.remove('is-wheeling');
+}
+carousel.addEventListener('pointerdown',interruptProjectScroll,{passive:true});
 // A vertical mouse wheel travels through the rail; its ends return control to the page.
 let projectWheelTimer;
 carousel.addEventListener('wheel',event=>{
-  if(event.ctrlKey||event.shiftKey||Math.abs(event.deltaX)>Math.abs(event.deltaY)||!event.deltaY)return;
+  if(event.ctrlKey)return;
+  if(event.shiftKey||Math.abs(event.deltaX)>Math.abs(event.deltaY)||!event.deltaY){interruptProjectScroll();return;}
   const delta=event.deltaY*(event.deltaMode===1?20:event.deltaMode===2?carousel.clientWidth:1);
   const max=carousel.scrollWidth-carousel.clientWidth;
   if(max<1||(delta<0&&carousel.scrollLeft<=1)||(delta>0&&carousel.scrollLeft>=max-1))return;
   event.preventDefault();
+  projectDestination=null;
   carousel.classList.add('is-wheeling');
-  carousel.scrollLeft=Math.max(0,Math.min(max,carousel.scrollLeft+delta));
+  projectWheelTarget=Math.max(0,Math.min(max,(projectWheelTarget??carousel.scrollLeft)+delta));
+  carousel.scrollTo({left:projectWheelTarget,behavior:motionOff?'instant':'smooth'});
   clearTimeout(projectWheelTimer);
   projectWheelTimer=setTimeout(()=>{
-    carousel.classList.remove('is-wheeling');
-    selectProject(nearestProject());
-  },160);
+    selectProject(nearestProject(projectWheelTarget??carousel.scrollLeft));
+  },240);
 },{passive:false});
 window.addEventListener('resize',()=>selectProject(projectIndex,true));
 selectProject(0,true);

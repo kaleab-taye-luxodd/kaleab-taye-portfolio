@@ -12,9 +12,9 @@
   <link rel="icon" type="image/svg+xml" href="./assets/favicon.svg">
   <script>try{if(localStorage.getItem('kt-theme')==='light')document.documentElement.dataset.theme='light';}catch{}</script>
   <link rel="stylesheet" href="./style.css">
-  <link rel="stylesheet" href="./theme.css"><link rel="stylesheet" href="./worlds.css?v=horizontal-projects-1"><link rel="stylesheet" href="./toolbox.css?v=brand-icons-2"><link rel="stylesheet" href="./trusted.css">
+  <link rel="stylesheet" href="./theme.css"><link rel="stylesheet" href="./worlds.css?v=glass-project-navigation-1"><link rel="stylesheet" href="./toolbox.css?v=brand-icons-2"><link rel="stylesheet" href="./trusted.css">
   <script defer src="./theme.js"></script>
-  <script defer src="./portfolio-data.js?v=trusted-brands-1"></script><script defer src="./app.js?v=trusted-brands-1"></script>
+  <script defer src="./portfolio-data.js?v=trusted-brands-1"></script><script defer src="./app.js?v=glass-project-navigation-1"></script>
 </head>
 <body>
   <a class="skip" href="#main">Skip to content</a>
@@ -54,8 +54,9 @@
     </section>
 
     <section class="work section-pad" id="work" aria-labelledby="work-title">
-      <div class="section-heading"><div><div class="section-index">02 / SELECTED WORLDS</div><h2 id="work-title">Work, with<br><span class="italic">a pulse.</span></h2></div><div class="carousel-description"><p>Products to play.<br>Spaces to explore.<br>Systems that bring it all together.</p><div class="carousel-controls"><button id="prev-project" class="round-button" aria-label="Previous project">←</button><span id="project-count" aria-live="polite">01 / 08</span><button id="next-project" class="round-button" aria-label="Next project">→</button></div></div></div>
-      <div class="carousel" aria-roledescription="carousel" aria-label="Selected projects" aria-describedby="work-scroll-hint" tabindex="0">
+      <div class="section-heading"><div><div class="section-index">02 / SELECTED WORLDS</div><h2 id="work-title">Work, with<br><span class="italic">a pulse.</span></h2></div><div class="carousel-description"><p>Products to play.<br>Spaces to explore.<br>Systems that bring it all together.</p></div></div>
+      <div class="project-toolbar"><span class="project-scroll-cue"><svg viewBox="0 0 32 18" width="32" height="18" aria-hidden="true"><path d="m7 4-5 5 5 5M2 9h28m-5-5 5 5-5 5"/></svg> Scroll to explore</span><div class="carousel-controls" role="group" aria-label="Project navigation"><button id="prev-project" type="button" class="round-button project-arrow" aria-label="Previous project" aria-controls="project-carousel"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5m6-6-6 6 6 6"/></svg></button><div class="project-position"><span id="project-count" aria-live="polite" aria-atomic="true">01 / 08</span><span class="project-scroll-meter" aria-hidden="true"><span></span></span></div><button id="next-project" type="button" class="round-button project-arrow" aria-label="Next project" aria-controls="project-carousel"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></button></div></div>
+      <div class="carousel" id="project-carousel" aria-roledescription="carousel" aria-label="Selected projects" aria-describedby="work-scroll-hint" tabindex="0">
         <div class="project-track"></div>
       </div><div class="work-bottom"><span id="work-scroll-hint">SCROLL HORIZONTALLY / SWIPE OR USE THE ARROWS</span><div class="project-dots" aria-label="Choose project"></div><span id="project-total"></span></div>
 
