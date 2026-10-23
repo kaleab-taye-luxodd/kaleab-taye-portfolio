@@ -72,7 +72,7 @@ const {projects, chapters, contracts, engagements} = window.PORTFOLIO;
 const asset = name => `./assets/${name}`;
 const tagMarkup = tags => tags.map(tag=>`<span class="glass-tag">${tag}</span>`).join('');
 function visualMarkup(project, context='') {
-  if(project.images) return `<div class="capture-frame ${project.id==='corksy'?'transparent-capture':''}"><span class="capture-chrome"><i></i><i></i><i></i><b>${project.name}</b></span><img src="${asset(project.images[0].src)}" alt="${project.images[0].alt}" loading="lazy" width="1440" height="1000"><span class="capture-glint" aria-hidden="true"></span></div><span class="capture-note">${project.images[0].caption}</span>`;
+  if(project.images) return `<div class="capture-frame ${project.id==='corksy'?'transparent-capture':''}"><span class="capture-chrome"><i></i><i></i><i></i><b>${project.visualTitle||project.name}</b></span><img src="${asset(project.images[0].src)}" alt="${project.images[0].alt}" loading="lazy" width="1440" height="1000"><span class="capture-glint" aria-hidden="true"></span></div><span class="capture-note">${project.images[0].caption}</span>`;
   return `<div class="engineering-record"><span class="record-label">PROJECT CONTRIBUTION</span><h4>${project.record[0]}</h4><div class="record-flow">${project.record.slice(1).map((step,i)=>`<div><b>0${i+1}</b><span>${step}</span><i aria-hidden="true">↗</i></div>`).join('')}</div><span class="record-note">${project.category}</span></div>`;
 }
 $('.project-track').innerHTML=projects.map(p=>`<article class="project-card" data-world="${p.world}" aria-label="${p.name}"><button class="project-art world-art" data-open="${p.id}" aria-label="Explore ${p.name}"><span class="project-overline">${p.category}</span><span class="world-orb" aria-hidden="true"></span><div class="project-capture">${visualMarkup(p)}</div><span class="world-enter">ENTER THE PROJECT <b>↗</b></span></button><div class="project-meta"><div><h3>${p.name}</h3><p>${p.description}</p><div class="project-tags">${tagMarkup(p.tags)}</div></div><button type="button" data-open="${p.id}" aria-label="Explore ${p.name}" class="project-open">↗</button></div></article>`).join('');
@@ -120,7 +120,11 @@ function openProject(id){
   $('#dialog-contribution').textContent=openedProject.contribution;
   $('.dialog-tags').innerHTML=tagMarkup(openedProject.tags);
   $('#dialog-source').href=openedProject.url;
-  $('#dialog-source').firstChild.textContent=openedProject.images?'Visit the project ':'View project source ';
+  $('#dialog-source').firstChild.textContent=openedProject.linkLabel||(openedProject.images?'Visit the project ':'View project source ');
+  $('.gallery-reference').textContent=openedProject.referenceNote||'';
+  $('.gallery-reference').hidden=!openedProject.referenceNote;
+  $('.project-source-links').hidden=!openedProject.links;
+  $('.project-source-links').innerHTML=openedProject.links?`<span>Original site navigation · currently offline</span><div>${openedProject.links.map(link=>`<a href="${link.url}" target="_blank" rel="noopener noreferrer">${link.label} ↗</a>`).join('')}</div>`:'';
   $('.gallery-controls').hidden=!openedProject.images;
   if(openedProject.images){showGallery(0);$('#gallery-prev').disabled=$('#gallery-next').disabled=openedProject.images.length<2;}
   else $('.dialog-image-wrap').innerHTML=visualMarkup(openedProject);

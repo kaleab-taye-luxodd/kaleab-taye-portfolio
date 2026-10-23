@@ -5,7 +5,7 @@
 [data-world=luxodd]{--world:#aaff30;--world-rgb:80,241,101;--world-deep:#071b12}
 [data-world=blogs]{--world:#a2c7ff;--world-rgb:104,159,241;--world-deep:#111d30}
 [data-world=qmem]{--world:#8ee5c1;--world-rgb:72,199,156;--world-deep:#10231f}
-[data-world=mereb]{--world:#f2b780;--world-rgb:206,123,61;--world-deep:#1f1712}
+[data-world=mereb]{--world:#e8c26b;--world-rgb:190,149,54;--world-deep:#1b170d}
 [data-world=studio]{--world:#ecd3b4;--world-rgb:201,164,119;--world-deep:#292018}
 [data-world=cloud]{--world:#8dd5ff;--world-rgb:65,172,238;--world-deep:#0c1a2c}
 [data-world=mobility]{--world:#a5f0cb;--world-rgb:73,200,145;--world-deep:#0e241e}
@@ -23,3 +23,10 @@
 /* Prevent focus scrolling from shifting the contents of the sticky stage. */
 .journey-sticky{overflow:clip}
 @media(max-width:640px){.journey-visual .engineering-record h4{font-size:23px;margin:12px 0}.journey-visual .record-flow>div{padding:6px 0}.journey-visual .record-flow{margin:10px 0}.journey-visual .record-note{display:block}}
+
+.gallery-reference{font-size:11px;line-height:1.8;color:#e6daefb3;margin:20px 0 0;padding:15px 18px;border:1px solid rgba(var(--world-rgb),.2);border-radius:12px;background:rgba(var(--world-rgb),.05)}
+.gallery-reference[hidden]{display:none}
+
+[data-world=angels]{--world:#f9ad4a;--world-rgb:249,173,74;--world-deep:#231a0e}
+.project-source-links{margin-top:25px;padding-top:20px;border-top:1px solid rgba(var(--world-rgb),.25)}
+.project-source-links>span{font-size:10px;line-height:1.7;color:#e6daefb3}.project-source-links>div{display:flex;flex-wrap:wrap;gap:9px 14px;margin-top:12px}.project-source-links a{font-size:11px;color:var(--world);line-height:1.8;text-underline-offset:4px}.project-source-links a:hover{text-decoration:underline}.project-source-links[hidden]{display:none}
