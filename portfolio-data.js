@@ -22,7 +22,7 @@ window.PORTFOLIO = {
     {title:'Parking management system',role:'Full-stack developer & designer',text:'Design and full-stack development of a parking management system.',tags:['UI / UX design','Full-stack']},
     {title:'Game engine automation',role:'Full-stack developer & lead project managing engineer',text:'Game-engine automation and optimization, with engineering and project leadership responsibilities.',tags:['Automation','Optimization','Technical leadership']},
     {title:'HaHuJobs Primary',role:'Upwork portfolio',text:'Frontend development with Vue.js, Nuxt.js, and Tailwind CSS.',tags:['Vue.js','Nuxt.js','Tailwind CSS']},
-    {title:'Fundo',role:'Upwork portfolio',text:'Frontend development with Vue.js, Nuxt.js, and Tailwind CSS.',tags:['Vue.js','Nuxt.js','Tailwind CSS']}
+    {title:'Foundo',role:'Upwork portfolio',text:'Frontend development with Vue.js, Nuxt.js, and Tailwind CSS.',tags:['Vue.js','Nuxt.js','Tailwind CSS']}
   ],
   chapters:[
     {year:'2018',label:'Foundations',date:'2018–2023',title:'A foundation.<br>A first venture.',text:'Studying Software Engineering at AAIT, Addis Ababa University, and co-building Qmem Developers. Learning to turn questions into working products.',project:'qmem',tags:['BSc Software Engineering','Co-founder · Qmem']},

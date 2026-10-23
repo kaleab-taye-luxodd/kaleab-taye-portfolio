@@ -1,0 +1,37 @@
+.trusted{padding:18px var(--pad) 70px;overflow:hidden;position:relative;isolation:isolate}
+.trusted::before{content:'';position:absolute;inset:35px 12% 0;background:radial-gradient(ellipse,#b49acf12,transparent 68%);z-index:-1;pointer-events:none}
+.trusted-heading{display:flex;align-items:center;justify-content:center;gap:24px;max-width:720px;margin:auto}
+.trusted-heading>span{height:1px;flex:1;background:linear-gradient(90deg,transparent,var(--line))}
+.trusted-heading>span:last-child{transform:rotate(180deg)}
+.trusted-heading h2{font-size:10px;letter-spacing:.18em;text-transform:uppercase;font-weight:500;margin:0;white-space:nowrap}
+.trusted-caption{text-align:center;color:var(--muted);font-size:11px;line-height:1.6;margin:13px 0 31px}
+.trusted-window{margin:0 calc(-1 * var(--pad));overflow:hidden;padding:10px 0 18px;mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent);-webkit-mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent)}
+.trusted-window:focus-visible{outline:2px solid var(--purple);outline-offset:-4px}
+.trusted-track{display:flex;width:max-content;animation:trusted-loop 54s linear infinite;will-change:transform}
+.trusted-logos{display:flex;gap:20px;align-items:center;list-style:none;padding:0 20px 0 0;margin:0;flex-shrink:0}
+.trusted-logo{position:relative;display:flex;align-items:center;justify-content:center;width:210px;height:102px;padding:20px 22px;border:1px solid #9885aa26;border-radius:16px;background:linear-gradient(135deg,#ffffff40,#ffffff0a);box-shadow:inset 0 1px 0 #ffffff38;overflow:hidden;transition:transform .35s,border-color .35s,box-shadow .35s}
+.trusted-logo::after{content:'';position:absolute;inset:-40% -80%;background:linear-gradient(110deg,transparent 43%,#b89bd522 50%,transparent 57%);transform:translateX(-55%);transition:transform .85s;pointer-events:none}
+.trusted-logo:hover{transform:translateY(-5px);border-color:#a58bb66b;box-shadow:0 12px 28px #62417c12,inset 0 1px 0 #ffffff60}
+.trusted-logo:hover::after{transform:translateX(55%)}
+.trusted-logo img{display:block;width:auto;height:auto;max-width:100%;max-height:50px;object-fit:contain;filter:brightness(0);opacity:.62;transition:opacity .35s}
+.trusted-logo:hover img{opacity:.95}
+.trusted-logo.brand-qmem img{max-height:68px}
+.trusted-logo.brand-gugs img{max-height:58px}
+.trusted-logo .company-name{font-size:29px;font-weight:500;letter-spacing:-.05em;opacity:.7}
+.trusted-logo.brand-foundo{gap:13px}.trusted-logo.brand-foundo img{max-width:39px;max-height:47px}
+.trusted-controls{display:flex;align-items:center;justify-content:space-between;gap:20px;max-width:720px;margin:8px auto 0;font-size:9px;color:var(--muted)}
+#trusted-motion{display:inline-flex;align-items:center;gap:7px;padding:8px 11px;border:1px solid var(--line);border-radius:20px;background:transparent;font-size:9px;white-space:nowrap;transition:background .25s,border-color .25s}
+#trusted-motion:hover{background:#a88bc514;border-color:var(--purple)}
+#trusted-motion:disabled{cursor:default;opacity:.65}
+.trusted-window:hover .trusted-track,.trusted-window:focus-within .trusted-track,.trusted[data-paused="true"] .trusted-track{animation-play-state:paused}
+html[data-theme="dark"] .trusted-logo{background:linear-gradient(135deg,#84709712,#ffffff03);border-color:#a48ab52b;box-shadow:inset 0 1px 0 #ffffff09}
+html[data-theme="dark"] .trusted-logo img{filter:brightness(0) invert(1);opacity:.7}
+html[data-theme="dark"] .trusted-logo:hover img{opacity:1}
+html[data-theme="dark"] .trusted-logo:hover{border-color:#bba0d06b;box-shadow:0 12px 30px #0002,inset 0 1px 0 #ffffff1a}
+body.motion-off .trusted-track{animation:none;transform:none;will-change:auto}
+body.motion-off .trusted-clone{display:none}
+body.motion-off .trusted-window{overflow-x:auto;scrollbar-width:thin;scrollbar-color:var(--purple) transparent}
+body.motion-off .trusted-logos{padding-left:var(--pad);padding-right:var(--pad)}
+@keyframes trusted-loop{to{transform:translateX(-50%)}}
+@media(max-width:640px){.trusted{padding-top:5px;padding-bottom:45px}.trusted-heading{gap:16px}.trusted-caption{font-size:10px;margin-bottom:23px}.trusted-logos{gap:14px;padding-right:14px}.trusted-logo{width:170px;height:90px;padding:18px;border-radius:13px}.trusted-logo img{max-height:44px}.trusted-logo.brand-qmem img{max-height:61px}.trusted-logo.brand-gugs img{max-height:51px}.trusted-controls{font-size:8px;gap:12px}#trusted-motion{font-size:8px}.trusted-track{animation-duration:48s}}
+@media(prefers-reduced-motion:reduce){.trusted-track{animation:none;transform:none;will-change:auto}.trusted-clone{display:none}.trusted-window{overflow-x:auto;scrollbar-width:thin}.trusted-logos{padding-left:var(--pad);padding-right:var(--pad)}.trusted-logo,.trusted-logo::after,.trusted-logo img{transition:none}}

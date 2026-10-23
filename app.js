@@ -222,3 +222,27 @@ toolFilters.forEach(button => button.addEventListener('click', () => {
     ? `Showing all ${visibleTools} tools across ${visibleCollections} collections`
     : `Showing ${visibleTools} tools in ${button.textContent.trim()}`;
 }));
+
+// Two identical groups keep the logo loop seamless, with one accessible list.
+const trusted = $('.trusted');
+const trustedClone = $('.trusted-logos').cloneNode(true);
+trustedClone.classList.add('trusted-clone');
+trustedClone.setAttribute('aria-hidden', 'true');
+trustedClone.inert = true;
+$('.trusted-track').append(trustedClone);
+let trustedPaused = false;
+function updateTrustedMotion() {
+  const button = $('#trusted-motion');
+  trusted.dataset.paused = String(trustedPaused);
+  button.disabled = motionOff;
+  button.setAttribute('aria-pressed', String(trustedPaused));
+  button.setAttribute('aria-label', motionOff ? 'Company logo animation is off' : `${trustedPaused ? 'Resume' : 'Pause'} company logo animation`);
+  button.innerHTML = motionOff ? 'Motion off' : `<span aria-hidden="true">${trustedPaused ? '▷' : 'Ⅱ'}</span> ${trustedPaused ? 'Resume' : 'Pause'} motion`;
+}
+$('#trusted-motion').addEventListener('click', () => {
+  trustedPaused = !trustedPaused;
+  updateTrustedMotion();
+});
+$('#motion-toggle').addEventListener('click', updateTrustedMotion);
+motionPreference.addEventListener('change', updateTrustedMotion);
+updateTrustedMotion();
