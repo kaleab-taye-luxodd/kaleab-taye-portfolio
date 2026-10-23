@@ -75,9 +75,11 @@ function visualMarkup(project, context='') {
   if(project.images) return `<div class="capture-frame ${project.id==='corksy'?'transparent-capture':''}"><span class="capture-chrome"><i></i><i></i><i></i><b>${project.visualTitle||project.name}</b></span><img src="${asset(project.images[0].src)}" alt="${project.images[0].alt}" loading="lazy" width="1440" height="1000"><span class="capture-glint" aria-hidden="true"></span></div><span class="capture-note">${project.images[0].caption}</span>`;
   return `<div class="engineering-record"><span class="record-label">PROJECT CONTRIBUTION</span><h4>${project.record[0]}</h4><div class="record-flow">${project.record.slice(1).map((step,i)=>`<div><b>0${i+1}</b><span>${step}</span><i aria-hidden="true">↗</i></div>`).join('')}</div><span class="record-note">${project.category}</span></div>`;
 }
-$('.project-track').innerHTML=projects.map(p=>`<article class="project-card" data-world="${p.world}" aria-label="${p.name}"><button class="project-art world-art" data-open="${p.id}" aria-label="Explore ${p.name}"><span class="project-overline">${p.category}</span><span class="world-orb" aria-hidden="true"></span><div class="project-capture">${visualMarkup(p)}</div><span class="world-enter">ENTER THE PROJECT <b>↗</b></span></button><div class="project-meta"><div><h3>${p.name}</h3><p>${p.description}</p><div class="project-tags">${tagMarkup(p.tags)}</div></div><button type="button" data-open="${p.id}" aria-label="Explore ${p.name}" class="project-open">↗</button></div></article>`).join('');
+$('.project-track').innerHTML=projects.map(p=>`<article class="project-card" data-world="${p.world}" aria-label="${p.name}"><button class="project-art world-art" data-open="${p.id}" aria-label="Explore ${p.name}"><span class="project-overline">${p.category}</span><span class="world-orb" aria-hidden="true"></span><div class="project-capture">${visualMarkup(p)}</div><span class="world-enter">ENTER THE PROJECT <b>↗</b></span></button><div class="project-meta"><div><h3>${p.name}</h3><p>${p.description}</p><div class="project-tags">${tagMarkup(p.tags.slice(0,4))}</div></div><button type="button" data-open="${p.id}" aria-label="Explore ${p.name}" class="project-open">↗</button></div></article>`).join('');
 $('.project-dots').innerHTML=projects.map(p=>`<button aria-label="Show ${p.name}" aria-pressed="false"></button>`).join('');
 $('#project-total').textContent=`01 — ${String(projects.length).padStart(2,'0')}`;
+$('#catalogue-count').textContent=projects.length;
+$('#project-picker').innerHTML=projects.map((p,index)=>`<option value="${index}">${p.name}</option>`).join('');
 let projectIndex=0;
 const cards=$$('.project-card'), carousel=$('.carousel');
 const projectOffset=index=>cards[index].offsetLeft-cards[0].offsetLeft;
@@ -88,7 +90,10 @@ function syncProject(index){
   projectIndex=index;
   $('#project-count').textContent=`${String(index+1).padStart(2,'0')} / ${String(cards.length).padStart(2,'0')}`;
   $('.work').dataset.world=projects[index].world;
+  $('#project-picker').value=String(index);
   $$('.project-dots button').forEach((button,i)=>{button.classList.toggle('active',i===index);button.setAttribute('aria-pressed',String(i===index));});
+  const dots=$('.project-dots'),active=dots.children[index];
+  dots.scrollTo({left:active.offsetLeft-dots.clientWidth/2+active.clientWidth/2,behavior:motionOff?'instant':'smooth'});
 }
 let projectDestination=null, projectWheelTarget=null;
 function selectProject(index,immediate=false){
@@ -102,6 +107,7 @@ function selectProject(index,immediate=false){
 }
 $('#prev-project').addEventListener('click',()=>selectProject((projectDestination??projectIndex)-1));
 $('#next-project').addEventListener('click',()=>selectProject((projectDestination??projectIndex)+1));
+$('#project-picker').addEventListener('change',event=>selectProject(Number(event.target.value)));
 $$('.project-dots button').forEach((button,index)=>button.addEventListener('click',()=>selectProject(index)));
 carousel.addEventListener('keydown',event=>{
   if(!['ArrowRight','ArrowLeft','Home','End'].includes(event.key))return;
@@ -148,7 +154,7 @@ carousel.addEventListener('wheel',event=>{
 window.addEventListener('resize',()=>selectProject(projectIndex,true));
 selectProject(0,true);
 $('.engagement-grid').innerHTML=engagements.map((e,i)=>`<article class="engagement-card" id="engagement-${i}"><span class="engagement-number">${String(i+1).padStart(2,'0')} / ${e.role}</span><h3>${e.title}</h3><p>${e.text}</p><div class="project-tags">${tagMarkup(e.tags)}</div></article>`).join('');
-$('.contract-list').innerHTML=contracts.map(c=>`<article class="contract"><div><span class="contract-status"><i class="live-dot"></i>${c.type} · ${c.date}</span><h3>${c.title}</h3><p>${c.copy}</p></div><div class="project-tags">${tagMarkup(c.tags)}</div><a href="https://www.upwork.com/freelancers/~011af220bdfdcacc6f" target="_blank" rel="noopener noreferrer" aria-label="View ${c.title} on Upwork">↗</a></article>`).join('');
+$('.contract-list').innerHTML=contracts.map(c=>`<article class="contract"><div><span class="contract-status"><i class="live-dot"></i>${c.type} · ${c.date}</span><h3>${c.title}</h3><p>${c.copy}</p>${c.sourceName?`<small class="contract-source">Published in ${c.sourceName}’s Upwork history · shared work</small>`:''}</div><div class="project-tags">${tagMarkup(c.tags)}</div><a href="${c.source||'https://www.upwork.com/freelancers/~011af220bdfdcacc6f'}" target="_blank" rel="noopener noreferrer" aria-label="View ${c.title} on Upwork">↗</a></article>`).join('');
 
 const dialog=$('#project-dialog');
 let openedProject, galleryIndex=0,returnFocus;
@@ -166,6 +172,10 @@ function openProject(id){
   $('#dialog-category').textContent=openedProject.category;
   $('#dialog-description').textContent=openedProject.description;
   $('#dialog-contribution').textContent=openedProject.contribution;
+  const facts=$('.project-facts');facts.hidden=!openedProject.role;
+  facts.innerHTML=openedProject.role?`<div><dt>Role</dt><dd>${openedProject.role}</dd></div><div><dt>Published period</dt><dd>${openedProject.period}</dd></div><div><dt>Status</dt><dd>${openedProject.status}</dd></div>`:'';
+  const phases=$('.project-contracts');phases.hidden=!openedProject.contracts;
+  phases.innerHTML=openedProject.contracts?`<h3>Published contract records</h3>${openedProject.contracts.map(c=>`<div><strong>${c.title}</strong><span>${c.date}</span><small>Shared · Completed</small></div>`).join('')}`:'';
   $('.dialog-tags').innerHTML=tagMarkup(openedProject.tags);
   $('#dialog-source').href=openedProject.url;
   $('#dialog-source').firstChild.textContent=openedProject.linkLabel||(openedProject.images?'Visit the project ':'View project source ');
@@ -265,3 +275,7 @@ $('#trusted-motion').addEventListener('click', () => {
 $('#motion-toggle').addEventListener('click', updateTrustedMotion);
 motionPreference.addEventListener('change', updateTrustedMotion);
 updateTrustedMotion();
+
+// A project URL opens its complete record for sharing and direct navigation.
+const linkedProject=new URLSearchParams(location.search).get('project');
+if(linkedProject&&projects.some(project=>project.id===linkedProject))openProject(linkedProject);
