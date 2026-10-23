@@ -27,6 +27,6 @@
 .gallery-reference{font-size:11px;line-height:1.8;color:#e6daefb3;margin:20px 0 0;padding:15px 18px;border:1px solid rgba(var(--world-rgb),.2);border-radius:12px;background:rgba(var(--world-rgb),.05)}
 .gallery-reference[hidden]{display:none}
 
-[data-world=angels]{--world:#f9ad4a;--world-rgb:249,173,74;--world-deep:#231a0e}
+[data-world=angels]{--world:#5cddd0;--world-rgb:55,194,178;--world-deep:#0d2321}
 .project-source-links{margin-top:25px;padding-top:20px;border-top:1px solid rgba(var(--world-rgb),.25)}
 .project-source-links>span{font-size:10px;line-height:1.7;color:#e6daefb3}.project-source-links>div{display:flex;flex-wrap:wrap;gap:9px 14px;margin-top:12px}.project-source-links a{font-size:11px;color:var(--world);line-height:1.8;text-underline-offset:4px}.project-source-links a:hover{text-decoration:underline}.project-source-links[hidden]{display:none}
