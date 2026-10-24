@@ -15,3 +15,41 @@ html[data-theme=dark] #about .photo-note{background:linear-gradient(135deg,#8872
 @media(max-width:1000px){#about .portrait-star{right:1%;font-size:55px}#about .photo-note{left:0;right:2%;font-size:10px;padding:16px 18px}}
 @media(max-width:640px){#about{gap:42px}#about .about-photo{width:100%;max-width:430px;margin:0 auto}#about .portrait-cutout{height:min(145vw,650px);max-height:none;aspect-ratio:auto}#about .photo-note{bottom:8%;left:5%;right:5%;padding:16px 19px;font-size:10px}#about .portrait-star{font-size:49px;right:8%;top:15%}}
 @media(prefers-reduced-motion:reduce){#about .portrait-cutout{transition:none}#about .about-photo:hover .portrait-cutout{transform:none}#about .photo-note,#about .portrait-star{animation:none}}
+/* Light stays on the tailoring, leaving the face and university name clear. */
+#about .about-photo::before{animation:portrait-aura 12s ease-in-out infinite}
+#about .portrait-preview{position:relative;display:block;width:100%;padding:0;border:0;background:none;border-radius:20px;isolation:isolate;cursor:zoom-in;transition:transform .85s var(--ease)}
+#about .about-photo:hover .portrait-cutout{transform:none}
+#about .portrait-preview:hover{transform:translateY(-7px)}
+#about .portrait-sheen{position:absolute;inset:0;z-index:2;pointer-events:none;mask:url('./assets/kaleab-portrait-cutout.webp') center/contain no-repeat;-webkit-mask:url('./assets/kaleab-portrait-cutout.webp') center/contain no-repeat;clip-path:polygon(0 20%,100% 20%,100% 33%,0 33%);background:linear-gradient(110deg,transparent 38%,#fff9 49%,transparent 60%);background-size:350% 100%;opacity:.22;animation:portrait-tailored-shine 11s ease-in-out infinite}
+#about .portrait-glint{position:absolute;z-index:2;width:5px;height:5px;pointer-events:none;background:#fff6;border-radius:50%;box-shadow:0 0 8px 2px #e1d0f13d;opacity:0;animation:portrait-glint 9s ease-in-out infinite}
+#about .portrait-glint-one{left:57.4%;top:22.4%}
+#about .portrait-glint-two{left:65.6%;top:94%;animation-delay:4s}
+#about .portrait-zoom-hint{position:absolute;left:50%;bottom:3%;transform:translateX(-50%);display:inline-flex;align-items:center;gap:25px;border-radius:30px;padding:11px 18px;font-size:10px;white-space:nowrap;z-index:3;box-shadow:0 12px 30px #0002}
+#about .portrait-zoom-hint>span{font-size:16px}
+#about .portrait-caption{display:flex;align-items:center;flex-direction:column;gap:7px;text-align:center;margin-top:22px;color:var(--ink)}
+#about .portrait-caption [lang=am],#portrait-dialog [lang=am]{font-family:'Kefa','Nyala','Noto Sans Ethiopic',sans-serif;font-size:clamp(19px,1.9vw,28px);line-height:1.6;letter-spacing:.02em}
+#about .portrait-caption>span:nth-child(2){font-size:12px;letter-spacing:.025em}
+#about .portrait-caption small{font-size:9px;color:var(--muted);line-height:1.6}
+#portrait-dialog{width:min(760px,calc(100% - 32px));max-width:760px;max-height:calc(100svh - 32px);padding:24px;background:var(--paper);color:var(--ink);border:1px solid var(--line);overflow:auto;border-radius:24px}
+#portrait-dialog::backdrop{background:#0a0612b8;backdrop-filter:blur(18px)}
+#portrait-dialog .portrait-dialog-header{display:flex;justify-content:space-between;align-items:center;gap:18px}
+#portrait-dialog h2{font-size:27px;letter-spacing:-.04em;margin:0;font-weight:450}
+#portrait-dialog .portrait-close{flex-shrink:0}
+#portrait-dialog .portrait-view-controls{display:flex;gap:8px;margin:20px 0}
+#portrait-dialog .portrait-view-controls button{border:1px solid var(--line);border-radius:30px;background:transparent;padding:10px 15px;font-size:11px;transition:background .25s ease}
+#portrait-dialog .portrait-view-controls button[aria-pressed=true]{background:#b69ad528;border-color:var(--purple)}
+#portrait-dialog .portrait-full-view{position:relative;height:min(60svh,720px)}
+#portrait-dialog .portrait-full-view img{width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 18px 30px #0003)}
+#portrait-dialog .portrait-certificate-view{position:relative;overflow:hidden;width:min(100%,560px);aspect-ratio:1;margin:auto;border-radius:16px;background:radial-gradient(ellipse,#b69ad51a,transparent 70%)}
+#portrait-dialog .portrait-certificate-crop{position:absolute;width:300%;aspect-ratio:2/3;left:-136%;top:-150%}
+#portrait-dialog .portrait-certificate-crop img{display:block;width:100%;height:auto;max-width:none}
+.portrait-board-lettering{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:2}
+#portrait-dialog .portrait-board-lettering{filter:none}
+#portrait-dialog [hidden]{display:none!important}
+#portrait-dialog #portrait-dialog-caption{display:flex;flex-direction:column;gap:5px;text-align:center;color:var(--ink);font-size:11px;line-height:1.6;margin:20px 0 0}
+body.portrait-viewer-open{overflow:hidden}
+@keyframes portrait-aura{0%,100%{transform:translate3d(-3%,0,0) scale(.95);opacity:.65}50%{transform:translate3d(3%,-2%,0) scale(1.05);opacity:1}}
+@keyframes portrait-tailored-shine{0%,65%{background-position:100% 0;opacity:0}72%{opacity:.22}86%{background-position:0 0;opacity:.22}94%,100%{background-position:0 0;opacity:0}}
+@keyframes portrait-glint{0%,70%,100%{opacity:0;transform:scale(.6)}80%{opacity:.65;transform:scale(1)}90%{opacity:0;transform:scale(.7)}}
+@media(max-width:640px){#about .portrait-caption{margin-top:20px}#about .portrait-caption [lang=am]{font-size:23px}#about .portrait-sheen{clip-path:polygon(0 20%,100% 20%,100% 33%,0 33%)}#portrait-dialog{padding:18px}#portrait-dialog h2{font-size:23px}#portrait-dialog [lang=am]{font-size:23px}}
+@media(prefers-reduced-motion:reduce){#about .about-photo::before,#about .portrait-sheen,#about .portrait-glint{animation:none}#about .portrait-preview{transition:none}#about .portrait-preview:hover{transform:none}#about .portrait-sheen,#about .portrait-glint{display:none}}
