@@ -1,0 +1,17 @@
+/* The portrait's alpha is preserved; depth and light belong to the page. */
+#about .about-photo{margin:0;position:relative;isolation:isolate;perspective:1200px}
+#about .about-photo::before{content:'';position:absolute;inset:12% 12% 16%;z-index:-1;pointer-events:none;background:radial-gradient(ellipse at 45% 35%,#c2a5e023,transparent 64%),radial-gradient(ellipse at 58% 60%,#dfa76d12,transparent 65%);filter:blur(32px)}
+#about .about-photo::after{content:'';position:absolute;bottom:2.3%;left:33%;width:38%;height:3%;border-radius:50%;background:#40304c35;filter:blur(12px);z-index:-1;pointer-events:none}
+#about .portrait-cutout{display:block;position:relative;z-index:1;width:100%;height:auto;max-height:780px;aspect-ratio:2/3;object-fit:contain;object-position:center;border-radius:0;filter:drop-shadow(0 25px 20px #2b173033);transform:translateY(0);transition:transform .85s var(--ease),filter .85s var(--ease)}
+#about .about-photo:hover .portrait-cutout{transform:translateY(-7px);filter:drop-shadow(0 34px 26px #2b17303d)}
+#about .photo-note{z-index:3;left:8%;right:12%;bottom:9%;padding:19px 23px;transform:rotate(-5deg);border-radius:13px;backdrop-filter:blur(25px);-webkit-backdrop-filter:blur(25px);box-shadow:0 18px 50px #39244018,inset 0 1px 0 #ffffff55;animation:portrait-note-drift 9s ease-in-out infinite}
+#about .portrait-star{z-index:0;top:14%;right:9%;font-size:70px;opacity:.65;animation:spin 45s linear infinite}
+html[data-theme=dark] #about .about-photo::before{background:radial-gradient(ellipse at 45% 35%,#b898df28,transparent 64%),radial-gradient(ellipse at 58% 60%,#dfa76d0d,transparent 65%)}
+html[data-theme=dark] #about .about-photo::after{background:#0008;filter:blur(15px)}
+html[data-theme=dark] #about .portrait-cutout{filter:drop-shadow(0 28px 23px #0007)}
+html[data-theme=dark] #about .about-photo:hover .portrait-cutout{filter:drop-shadow(0 36px 30px #0008)}
+html[data-theme=dark] #about .photo-note{background:linear-gradient(135deg,#88729b4d,#34293f80);border-color:#bc9fd95e;box-shadow:0 20px 45px #0003,inset 0 1px 0 #ffffff24}
+@keyframes portrait-note-drift{0%,100%{translate:0 0}50%{translate:0 -5px}}
+@media(max-width:1000px){#about .portrait-star{right:1%;font-size:55px}#about .photo-note{left:0;right:2%;font-size:10px;padding:16px 18px}}
+@media(max-width:640px){#about{gap:42px}#about .about-photo{width:100%;max-width:430px;margin:0 auto}#about .portrait-cutout{height:min(145vw,650px);max-height:none;aspect-ratio:auto}#about .photo-note{bottom:8%;left:5%;right:5%;padding:16px 19px;font-size:10px}#about .portrait-star{font-size:49px;right:8%;top:15%}}
+@media(prefers-reduced-motion:reduce){#about .portrait-cutout{transition:none}#about .about-photo:hover .portrait-cutout{transform:none}#about .photo-note,#about .portrait-star{animation:none}}
