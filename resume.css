@@ -1,0 +1,19 @@
+.hero-actions{display:flex;align-items:center;flex-wrap:wrap;gap:20px;margin-top:28px;position:relative;z-index:3}
+.hero-actions .circle-link{margin-top:0}
+.resume-download{position:relative;isolation:isolate;display:inline-flex;align-items:center;justify-content:center;gap:13px;padding:14px 20px;border:1px solid #af94c65c;border-radius:14px;color:var(--ink);text-decoration:none;background:linear-gradient(125deg,#d9c3f01a,#d9c3f007);box-shadow:inset 0 1px 0 #fff2,0 8px 28px #10091b12;overflow:hidden;transition:transform .35s ease,border-color .35s ease,box-shadow .35s ease}
+.resume-download svg{width:23px;height:23px;flex-shrink:0;transition:transform .35s ease}
+.resume-download>span{font-size:12px;font-weight:500;line-height:1.4}
+.resume-download small{display:block;font-size:8px;font-weight:400;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);margin-top:3px}
+.resume-download:before{content:"";position:absolute;inset:-60%;z-index:-1;background:linear-gradient(105deg,transparent 40%,#ead4ff29 50%,transparent 60%);transform:translateX(-80%);transition:transform .7s ease}
+.resume-download:hover{transform:translateY(-3px);border-color:#cda9f2a6;box-shadow:inset 0 1px 0 #fff3,0 12px 32px #9b70c91c}
+.resume-download:hover:before{transform:translateX(80%)}
+.resume-download:hover svg{transform:translateY(2px)}
+.resume-download:focus-visible,.resume-contact:focus-visible{outline:2px solid var(--purple);outline-offset:5px}
+.about-resume-actions{display:flex;align-items:center;gap:24px;flex-wrap:wrap;margin-top:28px}
+.resume-contact{color:var(--ink);font-size:12px;text-decoration:none;border-bottom:1px solid var(--line);padding:12px 0;display:inline-flex;gap:20px}
+.about-copy .resume-detail{font-size:10px;line-height:1.7;margin-top:14px;color:var(--muted)}
+.contact-resume{display:flex;align-items:center;gap:22px;margin:0 0 30px}
+.contact-resume>span{font-size:11px;color:var(--muted);line-height:1.6}
+@media(max-width:640px){.hero-actions{gap:18px;margin-top:20px}.hero-actions .circle-link{margin-top:0}.resume-download{padding:11px 14px;gap:10px;border-radius:12px}.resume-download>span{font-size:10px}.resume-download small{font-size:7px}.resume-download svg{height:20px;width:20px}.hero-actions .resume-download{padding:9px 12px}.about-resume-actions{gap:20px}.resume-contact{font-size:11px}.contact-resume{gap:16px;align-items:center}.contact-resume>span{font-size:9px;max-width:130px}}
+@media(prefers-reduced-motion:reduce){.resume-download,.resume-download:before,.resume-download svg{transition:none}}
+@media(min-width:641px) and (max-width:900px){.hero{min-height:1200px}.build-universe{top:53%;height:37%}}
