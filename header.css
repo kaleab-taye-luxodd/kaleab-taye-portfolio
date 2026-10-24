@@ -1,0 +1,7 @@
+.site-header{position:fixed;background:transparent;border:0;box-shadow:none;backdrop-filter:none;-webkit-backdrop-filter:none;pointer-events:none;transition:transform .42s cubic-bezier(.22,1,.36,1),opacity .28s ease;transform:translateY(0);opacity:1}
+.site-header>*{pointer-events:auto}
+.site-header.header-hidden{transform:translateY(calc(-100% - 12px));opacity:0;pointer-events:none}
+.site-header.header-hidden>*{pointer-events:none}
+.site-header:has(:focus-visible){transform:translateY(0);opacity:1}
+.site-header:has(:focus-visible)>*{pointer-events:auto}
+@media(prefers-reduced-motion:reduce){.site-header{transition:none}}
