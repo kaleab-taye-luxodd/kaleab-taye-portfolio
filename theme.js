@@ -11,7 +11,7 @@
     toggle.title = dark ? 'Switch to light mode' : 'Switch to dark mode';
     toggle.querySelector('.theme-icon').textContent = dark ? '☀' : '☾';
     toggle.querySelector('.theme-label').textContent = dark ? 'Light' : 'Dark';
-    browserColor.content = dark ? '#141119' : '#eeeaf3';
+    browserColor.content = dark ? '#081a24' : '#edf7f5';
   }
   applyTheme(root.dataset.theme);
   toggle.addEventListener('click', () => {

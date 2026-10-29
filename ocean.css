@@ -1,0 +1,149 @@
+/* Ocean / emerald palette. Keep original motion and responsive layouts intact. */
+:root {
+  --paper: #edf7f5; --ink: #102f40; --muted: #496875; --line: #c0dcd8;
+  --blue: #1479c9; --green: #087f68; --purple: var(--green);
+  --spectrum: linear-gradient(115deg, #167ed5 0%, #0799aa 48%, #14ad79 100%);
+}
+:root[data-theme="dark"] {
+  --paper: #081a24; --ink: #e9f7f6; --muted: #a6c4cc; --line: #244955;
+  --blue: #65b9ff; --green: #67e8bc; --purple: var(--green);
+}
+html { background: var(--paper); }
+body { background: var(--paper); }
+::selection { background: #55d6bc; color: #082e3c; }
+.hero {
+  background: radial-gradient(ellipse at 85% 20%, #80e7c457, transparent 53%),
+    radial-gradient(ellipse at 55% 65%, #7bc7f959, transparent 60%), linear-gradient(125deg, #f3fafc, #e1f5ec);
+}
+html[data-theme="dark"] .hero {
+  background: radial-gradient(ellipse at 80% 28%, #0d7e6852, transparent 53%),
+    radial-gradient(ellipse at 48% 65%, #135c8c50, transparent 58%), linear-gradient(125deg, #081b2b, #082923);
+}
+.hero-copy h1 .italic, .section-heading h2 .italic, .contact-title i {
+  background: var(--spectrum); background-clip: text; -webkit-background-clip: text; color: transparent;
+}
+html[data-theme="dark"] .hero-copy h1 .italic,
+html[data-theme="dark"] .section-heading h2 .italic,
+html[data-theme="dark"] .contact-title i { background-image: linear-gradient(110deg, #7ac7ff, #57e3b3); }
+.scroll-progress, .project-scroll-meter > span, .timeline-meter > span { background: var(--spectrum); }
+html .glass { border-color: #278b9b30; box-shadow: 0 8px 30px #1248580c, inset 0 1px 0 #fff9; }
+html[data-theme="dark"] .glass { background: linear-gradient(135deg, #123b4dd9, #0c3530bd); border-color: #68d5c038; box-shadow: 0 8px 30px #0002, inset 0 1px 0 #b4f9e512; }
+.nav a[aria-current], .nav a:hover { background: #0d9a8518; box-shadow: inset 0 0 0 1px #089b8430; }
+html[data-theme="dark"] .nav a[aria-current], html[data-theme="dark"] .nav a:hover { background: #45dbb71a; box-shadow: inset 0 0 0 1px #71ddcf35; }
+.contact { background: radial-gradient(ellipse at 85% 20%, #76dfb846, transparent 60%), linear-gradient(125deg, #deeffa, #def5e9); }
+html[data-theme="dark"] .contact { background: radial-gradient(ellipse at 80% 30%, #106e5355, transparent 60%), linear-gradient(120deg, #0d2d45, #0b302b); }
+.live-dot { background: #0b9e73; box-shadow: 0 0 0 4px #0b9e731a; }
+html[data-theme="dark"] .live-dot { background: #67e8bc; }
+.project-category, .work-bottom, .section-index { color: #416976; }
+html[data-theme="dark"] .project-category, html[data-theme="dark"] .work-bottom,
+html[data-theme="dark"] .section-index { color: #a4ccd0; }
+.project-jump select { color: var(--ink); background-color: var(--paper); }
+:where(a, button, select):focus-visible { outline-color: var(--blue); }
+.project-facts dd { color: #e5f5f1; }
+.project-facts dt { color: #b2d8d6; }
+@media (forced-colors: active) {
+  .hero-copy h1 .italic, .section-heading h2 .italic, .contact-title i { background: none; color: CanvasText; }
+}
+
+/* Shared rhythm, surfaces and motion: restrained surroundings, expressive work. */
+:root {
+  --pad: clamp(20px, 5.2vw, 100px);
+  --surface: #f6fbfa; --surface-raised: #fff; --focus: #106bb5;
+  --motion-fast: 160ms; --motion-medium: 280ms; --motion-slow: 520ms;
+  --ease-settle: cubic-bezier(.22,1,.36,1);
+}
+:root[data-theme="dark"] { --surface: #102b36; --surface-raised: #153440; --focus: #85d6ff; }
+body::before { display: none; }
+body { line-height: 1.6; }
+button, select, summary { font-family: inherit; }
+button:disabled { cursor: default; opacity: .6; }
+a, button, select, summary { -webkit-tap-highlight-color: #15a88922; }
+:where(a, button, select, summary):focus-visible { outline: 3px solid var(--focus); outline-offset: 5px; }
+.section-pad { padding-block: clamp(64px, 8vw, 124px); }
+.hero-copy > p { max-width: 410px; color: var(--muted); font-size: clamp(14px,1.1vw,17px); }
+.hero .circle-link { gap: 24px; padding: 10px 11px 10px 22px; margin-top: 26px; border-radius: 40px; color: #fff; background: linear-gradient(110deg,#1267ae,#087d68); box-shadow: 0 8px 28px #075b7520; }
+.hero .circle-link b { color: #fff; border-color: #ffffff50; width: 36px; height: 36px; }
+.hero .circle-link:hover { box-shadow: 0 12px 30px #075b7530; }
+.hero .circle-link:hover b { background: #ffffff18; }
+.site-header.header-scrolled { background: var(--paper); border-bottom: 1px solid var(--line); height: 86px; }
+.intro h2 { max-width: 1050px; text-wrap: balance; }
+.intro-bottom p, .about-copy p { line-height: 1.85; }
+.section-heading h2, .engagements h2, .contracts h2, .about h2, .toolbox h2 { text-wrap: balance; }
+.project-meta { padding-top: 24px; }
+.project-meta p { max-width: 68ch; }
+.project-role { font-size: 12px; line-height: 1.7; padding-left: 14px; border-left: 2px solid var(--green); margin-block: 18px; }
+.project-role strong { display: block; color: var(--ink); font-size: 10px; text-transform: uppercase; letter-spacing: .08em; margin-bottom: 5px; }
+.glass-tag, .chapter-tags .glass-tag { backdrop-filter: none; -webkit-backdrop-filter: none; background: #168d8a0d; box-shadow: none; border-color: var(--line); font-size: 11px; padding: 7px 12px; }
+html[data-theme="dark"] .glass-tag { background: #75dbc80c; border-color: #80d8cf30; }
+.journey .glass-tag, #project-dialog .glass-tag { color: #e5f5f1; border-color: #80d8cf40; background: #ffffff06; }
+.engineering-record { backdrop-filter: none; }
+.scene-panel { backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); will-change: auto; }
+.stack-layer { backdrop-filter: none; }
+.project-toolbar .carousel-controls { backdrop-filter: none; -webkit-backdrop-filter: none; }
+.engagement-card { border-radius: 16px; background: var(--surface); box-shadow: none; }
+.engagement-card p, .contract p { line-height: 1.8; max-width: 64ch; }
+.contract { padding-block: 30px; }
+.contract-status, .contract-source { line-height: 1.8; }
+.tech-card { background: var(--surface); box-shadow: none; }
+.tech-purpose { line-height: 1.6; }
+.tool-filters { gap: 8px; }
+.tool-filters button { min-height: 44px; }
+.tool-collection { padding-top: 26px; }
+#project-dialog::backdrop, #portrait-dialog::backdrop { backdrop-filter: blur(5px); }
+.dialog-copy p { max-width: 64ch; line-height: 1.8; }
+.dialog-copy .section-index { color: #b4d9dc; }
+#project-dialog .dialog-close { background: #103744; color: #e9f7f6; }
+#project-dialog .dialog-close:hover { background: #17616a; }
+.asset-fallback { display: grid; place-items: center; min-height: 220px; padding: 32px; background: #103744; color: #d1e8e7; border: 1px solid #73c6c940; border-radius: 12px; }
+.contact-title { line-height: 1.05; }
+.contact-links a { display: inline-block; min-height: 44px; padding-block: 8px; }
+.footer-bottom { gap: 20px; flex-wrap: wrap; }
+#motion-toggle { min-height: 44px; }
+.project-directory { margin: 0 var(--pad) clamp(64px,8vw,120px); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.project-directory summary { cursor: pointer; padding: 25px 0; font-size: clamp(20px,2vw,30px); letter-spacing: -.035em; font-weight: 500; }
+.project-directory summary > span { float: right; font-size: 12px; font-weight: 400; letter-spacing: 0; line-height: 3; color: var(--muted); }
+.project-directory-grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 0 30px; padding-bottom: 30px; }
+.project-directory article { border-top: 1px solid var(--line); padding: 25px 0; }
+.directory-index { display: block; font-size: 9px; letter-spacing: .06em; line-height: 1.8; color: var(--muted); }
+.project-directory h3 { font-size: 23px; letter-spacing: -.035em; font-weight: 500; margin: 16px 0; }
+.project-directory p { font-size: 12px; line-height: 1.85; color: var(--muted); }
+.project-directory p strong { color: var(--ink); }
+.project-directory article > a { display: inline-block; min-height: 44px; padding-block: 10px; font-size: 12px; color: var(--purple); text-decoration: underline; text-underline-offset: 4px; }
+/* Pause CSS and SVG decoration without a new animation loop or a hardware benchmark. */
+.effects-resting *, .effects-resting *::before, .effects-resting *::after,
+body.page-hidden *, body.page-hidden *::before, body.page-hidden *::after { animation-play-state: paused !important; }
+html.motion-start-off *, html.motion-start-off *::before, html.motion-start-off *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+body.reduced-effects .scene-panel, body.reduced-effects .glass { backdrop-filter: none; -webkit-backdrop-filter: none; }
+body.reduced-effects .build-universe *, body.reduced-effects .toolbox-orbit *, body.reduced-effects .about-photo * { animation: none !important; }
+@media (hover:hover) and (prefers-reduced-motion:no-preference) {
+  .project-open, .round-button, .scene-tabs button, .tool-filters button, .hero .circle-link { transition: transform var(--motion-fast) var(--ease-settle), background var(--motion-fast), box-shadow var(--motion-medium); }
+  .project-directory article > a:hover { text-decoration-thickness: 2px; }
+  .engagement-card { transition: border-color var(--motion-medium); }
+  .engagement-card:hover { border-color: var(--green); }
+}
+@media (max-width:1024px) { .project-directory-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+@media (max-width:640px) {
+  .site-header.header-scrolled { height: 74px; }
+  .hero-copy > p { max-width: 310px; padding-right: 12px; }
+  .hero .circle-link { padding: 7px 8px 7px 15px; gap: 12px; font-size: 11px; }
+  .project-role { font-size: 12px; }
+  .project-directory-grid { grid-template-columns: 1fr; }
+  .project-directory summary > span { float: none; display: block; line-height: 1.8; margin-top: 8px; }
+  .contact-links { gap: 18px; flex-wrap: wrap; }
+  .footer-bottom { gap: 16px 24px; }
+  .dialog-copy { overflow-wrap: anywhere; }
+  .engagement-card { padding: 24px; }
+  .contract { gap: 20px; }
+}
+@media (prefers-reduced-motion:reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; animation: none !important; transition: none !important; }
+}
+@supports not (background-clip:text) {
+  .hero-copy h1 .italic, .section-heading h2 .italic, .contact-title i { background: none; color: var(--green); }
+}
+.world-backdrop { filter: none; opacity: .045; transform: none; transition: none; }
+.project-art:focus-visible .world-enter { opacity: 1; transform: translateY(0); }
+@media (prefers-reduced-motion:no-preference) {
+  #project-dialog[open] .dialog-layout { animation: dialog-arrive var(--motion-medium) var(--ease-settle) both; }
+}
+@keyframes dialog-arrive { from { opacity: .4; transform: translateY(8px); } to { opacity: 1; transform: none; } }

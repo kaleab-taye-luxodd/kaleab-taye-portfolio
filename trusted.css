@@ -1,5 +1,5 @@
 .trusted{padding:18px var(--pad) 70px;overflow:hidden;position:relative;isolation:isolate}
-.trusted::before{content:'';position:absolute;inset:35px 12% 0;background:radial-gradient(ellipse,#b49acf12,transparent 68%);z-index:-1;pointer-events:none}
+.trusted::before{content:'';position:absolute;inset:35px 12% 0;background:radial-gradient(ellipse,#9acccf12,transparent 68%);z-index:-1;pointer-events:none}
 .trusted-heading{display:flex;align-items:center;justify-content:center;gap:24px;max-width:720px;margin:auto}
 .trusted-heading>span{height:1px;flex:1;background:linear-gradient(90deg,transparent,var(--line))}
 .trusted-heading>span:last-child{transform:rotate(180deg)}
@@ -9,9 +9,9 @@
 .trusted-window:focus-visible{outline:2px solid var(--purple);outline-offset:-4px}
 .trusted-track{display:flex;width:max-content;animation:trusted-loop 54s linear infinite;will-change:transform}
 .trusted-logos{display:flex;gap:20px;align-items:center;list-style:none;padding:0 20px 0 0;margin:0;flex-shrink:0}
-.trusted-logo{position:relative;display:flex;align-items:center;justify-content:center;width:210px;height:102px;padding:20px 22px;border:1px solid #9885aa26;border-radius:16px;background:linear-gradient(135deg,#ffffff40,#ffffff0a);box-shadow:inset 0 1px 0 #ffffff38;overflow:hidden;transition:transform .35s,border-color .35s,box-shadow .35s}
-.trusted-logo::after{content:'';position:absolute;inset:-40% -80%;background:linear-gradient(110deg,transparent 43%,#b89bd522 50%,transparent 57%);transform:translateX(-55%);transition:transform .85s;pointer-events:none}
-.trusted-logo:hover{transform:translateY(-5px);border-color:#a58bb66b;box-shadow:0 12px 28px #62417c12,inset 0 1px 0 #ffffff60}
+.trusted-logo{position:relative;display:flex;align-items:center;justify-content:center;width:210px;height:102px;padding:20px 22px;border:1px solid #81acae26;border-radius:16px;background:linear-gradient(135deg,#ffffff40,#ffffff0a);box-shadow:inset 0 1px 0 #ffffff38;overflow:hidden;transition:transform .35s,border-color .35s,box-shadow .35s}
+.trusted-logo::after{content:'';position:absolute;inset:-40% -80%;background:linear-gradient(110deg,transparent 43%,#9bd2d522 50%,transparent 57%);transform:translateX(-55%);transition:transform .85s;pointer-events:none}
+.trusted-logo:hover{transform:translateY(-5px);border-color:#8bb4b66b;box-shadow:0 12px 28px #41797c12,inset 0 1px 0 #ffffff60}
 .trusted-logo:hover::after{transform:translateX(55%)}
 .trusted-logo img{display:block;width:auto;height:auto;max-width:100%;max-height:50px;object-fit:contain;filter:brightness(0);opacity:.62;transition:opacity .35s}
 .trusted-logo:hover img{opacity:.95}
@@ -23,13 +23,13 @@
 .brand-loche .trusted-product-name{font-size:20px}
 .trusted-controls{display:flex;align-items:center;justify-content:space-between;gap:20px;max-width:720px;margin:8px auto 0;font-size:9px;color:var(--muted)}
 #trusted-motion{display:inline-flex;align-items:center;gap:7px;padding:8px 11px;border:1px solid var(--line);border-radius:20px;background:transparent;font-size:9px;white-space:nowrap;transition:background .25s,border-color .25s}
-#trusted-motion:hover{background:#a88bc514;border-color:var(--purple)}
+#trusted-motion:hover{background:#8bc2c514;border-color:var(--purple)}
 #trusted-motion:disabled{cursor:default;opacity:.65}
 .trusted-window:hover .trusted-track,.trusted-window:focus-within .trusted-track,.trusted[data-paused="true"] .trusted-track{animation-play-state:paused}
-html[data-theme="dark"] .trusted-logo{background:linear-gradient(135deg,#84709712,#ffffff03);border-color:#a48ab52b;box-shadow:inset 0 1px 0 #ffffff09}
+html[data-theme="dark"] .trusted-logo{background:linear-gradient(135deg,#689c9f12,#ffffff03);border-color:#8ab3b52b;box-shadow:inset 0 1px 0 #ffffff09}
 html[data-theme="dark"] .trusted-logo img{filter:brightness(0) invert(1);opacity:.7}
 html[data-theme="dark"] .trusted-logo:hover img{opacity:1}
-html[data-theme="dark"] .trusted-logo:hover{border-color:#bba0d06b;box-shadow:0 12px 30px #0002,inset 0 1px 0 #ffffff1a}
+html[data-theme="dark"] .trusted-logo:hover{border-color:#a0ced06b;box-shadow:0 12px 30px #0002,inset 0 1px 0 #ffffff1a}
 body.motion-off .trusted-track{animation:none;transform:none;will-change:auto}
 body.motion-off .trusted-clone{display:none}
 body.motion-off .trusted-window{overflow-x:auto;scrollbar-width:thin;scrollbar-color:var(--purple) transparent}

@@ -1,0 +1,274 @@
+[
+  {
+    "run": 0,
+    "variant": "before",
+    "script": 469.45,
+    "layout": 2052.8689999999997,
+    "style": 1246.1660000000002,
+    "task": 7386.256,
+    "nodes": 4591,
+    "tasks": [
+      {
+        "start": 370.5,
+        "duration": 52
+      },
+      {
+        "start": 2817.3999999910593,
+        "duration": 135
+      },
+      {
+        "start": 3421.7999999970198,
+        "duration": 1429
+      },
+      {
+        "start": 6109.399999991059,
+        "duration": 284
+      }
+    ],
+    "load": 6080.199999988079
+  },
+  {
+    "run": 0,
+    "variant": "after",
+    "script": 435.50600000000003,
+    "layout": 1534.581,
+    "style": 1351.487,
+    "task": 6681.843,
+    "nodes": 5221,
+    "tasks": [
+      {
+        "start": 1652.199999988079,
+        "duration": 443
+      },
+      {
+        "start": 2189.7999999970198,
+        "duration": 1594
+      },
+      {
+        "start": 4974.5999999940395,
+        "duration": 471
+      },
+      {
+        "start": 5446.699999988079,
+        "duration": 259
+      }
+    ],
+    "load": 4975
+  },
+  {
+    "run": 0,
+    "variant": "after-no-directory",
+    "script": 519.815,
+    "layout": 1378.628,
+    "style": 1448.572,
+    "task": 6306.74,
+    "nodes": 4495,
+    "tasks": [
+      {
+        "start": 1409.2999999970198,
+        "duration": 648
+      },
+      {
+        "start": 2267.2999999970198,
+        "duration": 1480
+      },
+      {
+        "start": 4767.29999999702,
+        "duration": 594
+      },
+      {
+        "start": 5361.5999999940395,
+        "duration": 383
+      },
+      {
+        "start": 6133.399999991059,
+        "duration": 51
+      }
+    ],
+    "load": 4768.5
+  },
+  {
+    "run": 1,
+    "variant": "after",
+    "script": 551.085,
+    "layout": 1577.3319999999999,
+    "style": 1681.099,
+    "task": 7148.17,
+    "nodes": 5213,
+    "tasks": [
+      {
+        "start": 2037.9000000059605,
+        "duration": 282
+      },
+      {
+        "start": 2418.2000000029802,
+        "duration": 1775
+      },
+      {
+        "start": 4842.29999999702,
+        "duration": 54
+      },
+      {
+        "start": 4907.4000000059605,
+        "duration": 71
+      },
+      {
+        "start": 5327.9000000059605,
+        "duration": 511
+      },
+      {
+        "start": 5841.9000000059605,
+        "duration": 345
+      }
+    ],
+    "load": 5328.5999999940395
+  },
+  {
+    "run": 1,
+    "variant": "before",
+    "script": 444.398,
+    "layout": 1428.026,
+    "style": 1161.356,
+    "task": 6057.712,
+    "nodes": 4591,
+    "tasks": [
+      {
+        "start": 2061.5999999940395,
+        "duration": 201
+      },
+      {
+        "start": 2325,
+        "duration": 1480
+      },
+      {
+        "start": 4752.70000000298,
+        "duration": 301
+      }
+    ],
+    "load": 4743.899999991059
+  },
+  {
+    "run": 1,
+    "variant": "after-no-directory",
+    "script": 503.856,
+    "layout": 1454.8490000000002,
+    "style": 1466.897,
+    "task": 6766.142000000001,
+    "nodes": 4785,
+    "tasks": [
+      {
+        "start": 1428.5,
+        "duration": 611
+      },
+      {
+        "start": 2214.4000000059605,
+        "duration": 1620
+      },
+      {
+        "start": 5019.5,
+        "duration": 511
+      },
+      {
+        "start": 5534.800000011921,
+        "duration": 320
+      }
+    ],
+    "load": 5021.4000000059605
+  },
+  {
+    "run": 2,
+    "variant": "before",
+    "script": 411.78,
+    "layout": 1399.7489999999998,
+    "style": 1335.261,
+    "task": 6536.386,
+    "nodes": 4359,
+    "tasks": [
+      {
+        "start": 2041.5,
+        "duration": 214
+      },
+      {
+        "start": 2346.4000000059605,
+        "duration": 1430
+      },
+      {
+        "start": 4788.29999999702,
+        "duration": 296
+      }
+    ],
+    "load": 4771
+  },
+  {
+    "run": 2,
+    "variant": "after",
+    "script": 530.006,
+    "layout": 1490.9650000000001,
+    "style": 1678.8909999999998,
+    "task": 6986.152,
+    "nodes": 5099,
+    "tasks": [
+      {
+        "start": 258,
+        "duration": 69
+      },
+      {
+        "start": 364.59999999403954,
+        "duration": 51
+      },
+      {
+        "start": 2199.699999988079,
+        "duration": 147
+      },
+      {
+        "start": 2469.199999988079,
+        "duration": 1809
+      },
+      {
+        "start": 4836.399999991059,
+        "duration": 56
+      },
+      {
+        "start": 5258.5999999940395,
+        "duration": 524
+      },
+      {
+        "start": 5783.199999988079,
+        "duration": 304
+      }
+    ],
+    "load": 5262.399999991059
+  },
+  {
+    "run": 2,
+    "variant": "after-no-directory",
+    "script": 474.51500000000004,
+    "layout": 1383.34,
+    "style": 1508.648,
+    "task": 6571.182000000001,
+    "nodes": 4781,
+    "tasks": [
+      {
+        "start": 1691,
+        "duration": 60
+      },
+      {
+        "start": 1900.4000000059605,
+        "duration": 208
+      },
+      {
+        "start": 2224.5999999940395,
+        "duration": 1576
+      },
+      {
+        "start": 5024.5999999940395,
+        "duration": 516
+      },
+      {
+        "start": 5540.79999999702,
+        "duration": 313
+      }
+    ],
+    "load": 5024.9000000059605
+  }
+]

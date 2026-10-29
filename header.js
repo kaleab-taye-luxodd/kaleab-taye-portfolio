@@ -10,6 +10,8 @@
   function updateHeader() {
     pending = false;
     const currentY = Math.max(0, window.scrollY);
+    header.classList.toggle('header-scrolled', currentY > 80);
+    updateActiveSection();
     const delta = currentY - previousY;
     previousY = currentY;
     const keyboardFocus = header.contains(document.activeElement) && document.activeElement.matches(':focus-visible');
@@ -38,5 +40,19 @@
   window.addEventListener('resize', scheduleUpdate);
   window.addEventListener('pageshow', scheduleUpdate);
   header.addEventListener('focusin', () => header.classList.remove('header-hidden'));
+  const links = [...header.querySelectorAll('nav a, .contact-nav')];
+  const sections = links.map(link => document.querySelector(link.hash)).filter(Boolean);
+  function updateActiveSection() {
+    const threshold = Math.min(innerHeight * .35, 220);
+    let active;
+    for (const section of sections) {
+      const bounds = section.getBoundingClientRect();
+      if (bounds.top <= threshold && bounds.bottom > threshold) active = section;
+    }
+    links.forEach(link => {
+      if (active && link.hash === `#${active.id}`) link.setAttribute('aria-current','location');
+      else link.removeAttribute('aria-current');
+    });
+  }
   updateHeader();
 })();

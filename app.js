@@ -2,20 +2,30 @@
 const $ = (s) => document.querySelector(s);
 const $$ = (s) => [...document.querySelectorAll(s)];
 const motionPreference = window.matchMedia('(prefers-reduced-motion: reduce)');
-let motionOff = motionPreference.matches;
-try { motionOff = localStorage.getItem('kt-motion') === 'off' || motionOff; } catch {}
+let motionChoice = 'on';
+try { motionChoice = localStorage.getItem('kt-motion') === 'off' ? 'off' : 'on'; } catch {}
+let motionOff = motionPreference.matches || motionChoice === 'off';
 let updateSceneMotion = () => {};
-function setMotion(off) {
-  motionOff = off;
-  document.body.classList.toggle('motion-off', off);
-  $('#motion-toggle').textContent = `Motion: ${off ? 'off' : 'on'}`;
-  $('#motion-toggle').setAttribute('aria-pressed', String(off));
-  try { localStorage.setItem('kt-motion', off ? 'off' : 'on'); } catch {}
+function setMotion(off, persist = false) {
+  if (persist) {
+    motionChoice = off ? 'off' : 'on';
+    try { localStorage.setItem('kt-motion', motionChoice); } catch {}
+  }
+  motionOff = motionPreference.matches || off;
+  document.body.classList.toggle('motion-off', motionOff);
+  document.documentElement.classList.toggle('motion-start-off', motionOff);
+  if (motionOff) document.getAnimations().forEach(animation => {
+    if (animation.effect?.target?.closest('.chapter-copy, .journey-visual, .tool-collection')) animation.cancel();
+  });
+  const button = $('#motion-toggle');
+  button.textContent = motionPreference.matches ? 'Motion: reduced by system' : `Motion: ${motionOff ? 'off' : 'on'}`;
+  button.setAttribute('aria-pressed', String(motionOff));
+  button.disabled = motionPreference.matches;
   updateSceneMotion();
 }
-$('#motion-toggle').addEventListener('click', () => setMotion(!motionOff));
-motionPreference.addEventListener('change', e => setMotion(e.matches));
-setMotion(motionOff);
+$('#motion-toggle').addEventListener('click', () => setMotion(!motionOff, true));
+motionPreference.addEventListener('change', () => setMotion(motionChoice === 'off'));
+setMotion(motionChoice === 'off');
 function updateClock() {
   $('#local-time').textContent = new Intl.DateTimeFormat('en-GB', { timeZone:'Africa/Addis_Ababa', hour:'2-digit',minute:'2-digit', hour12:false }).format(new Date());
 }
@@ -53,7 +63,7 @@ updateSceneMotion();
 document.addEventListener('visibilitychange',updateSceneMotion);
 let pointerFrame = 0;
 universe.addEventListener('pointermove', e => {
-  if(motionOff || e.pointerType !== 'mouse' || pointerFrame) return;
+  if(motionOff || document.body.classList.contains('reduced-effects') || !sceneVisible || document.hidden || e.pointerType !== 'mouse' || pointerFrame) return;
   pointerFrame = requestAnimationFrame(() => {
     const rect = universe.getBoundingClientRect();
     universe.style.setProperty('--scene-x',`${((e.clientX-rect.left)/rect.width-.5)*8}deg`);
@@ -72,21 +82,23 @@ const {projects, chapters, contracts, engagements} = window.PORTFOLIO;
 const asset = name => `./assets/${name}`;
 const tagMarkup = tags => tags.map(tag=>`<span class="glass-tag">${tag}</span>`).join('');
 function visualMarkup(project, context='') {
-  if(project.images) return `<div class="capture-frame ${project.id==='corksy'?'transparent-capture':''}"><span class="capture-chrome"><i></i><i></i><i></i><b>${project.visualTitle||project.name}</b></span><img src="${asset(project.images[0].src)}" alt="${project.images[0].alt}" loading="lazy" width="1440" height="1000"><span class="capture-glint" aria-hidden="true"></span></div><span class="capture-note">${project.images[0].caption}</span>`;
+  if(project.images) return `<div class="capture-frame ${project.id==='corksy'?'transparent-capture':''}"><span class="capture-chrome"><i></i><i></i><i></i><b>${project.visualTitle||project.name}</b></span><img src="${asset(project.images[0].src)}" alt="${project.images[0].alt}" loading="lazy" decoding="async" width="1440" height="1000"><span class="capture-glint" aria-hidden="true"></span></div><span class="capture-note">${project.images[0].caption}</span>`;
   return `<div class="engineering-record"><span class="record-label">PROJECT CONTRIBUTION</span><h4>${project.record[0]}</h4><div class="record-flow">${project.record.slice(1).map((step,i)=>`<div><b>0${i+1}</b><span>${step}</span><i aria-hidden="true">↗</i></div>`).join('')}</div><span class="record-note">${project.category}</span></div>`;
 }
-$('.project-track').innerHTML=projects.map(p=>`<article class="project-card" data-world="${p.world}" aria-label="${p.name}"><button class="project-art world-art" data-open="${p.id}" aria-label="Explore ${p.name}"><span class="project-overline">${p.category}</span><span class="world-orb" aria-hidden="true"></span><div class="project-capture">${visualMarkup(p)}</div><span class="world-enter">ENTER THE PROJECT <b>↗</b></span></button><div class="project-meta"><div><h3>${p.name}</h3><p>${p.description}</p><div class="project-tags">${tagMarkup(p.tags.slice(0,4))}</div></div><button type="button" data-open="${p.id}" aria-label="Explore ${p.name}" class="project-open">↗</button></div></article>`).join('');
+$('.project-track').innerHTML=projects.map(p=>`<article class="project-card" data-world="${p.world}" aria-label="${p.name}"><button class="project-art world-art" data-open="${p.id}" aria-label="Explore ${p.name}"><span class="project-overline">${p.category}</span><span class="world-orb" aria-hidden="true"></span><div class="project-capture">${visualMarkup(p)}</div><span class="world-enter">ENTER THE PROJECT <b>↗</b></span></button><div class="project-meta"><div><h3>${p.name}</h3><p>${p.description}</p><p class="project-role"><strong>My contribution</strong> ${p.contribution}</p><div class="project-tags">${tagMarkup(p.tags.slice(0,4))}</div></div><button type="button" data-open="${p.id}" aria-label="Explore ${p.name}" class="project-open">↗</button></div></article>`).join('');
 $('.project-dots').innerHTML=projects.map(p=>`<button aria-label="Show ${p.name}" aria-pressed="false"></button>`).join('');
 $('#project-total').textContent=`01 — ${String(projects.length).padStart(2,'0')}`;
 $('#catalogue-count').textContent=projects.length;
 $('#project-picker').innerHTML=projects.map((p,index)=>`<option value="${index}">${p.name}</option>`).join('');
-let projectIndex=0;
+let projectIndex=-1;
 const cards=$$('.project-card'), carousel=$('.carousel');
-const projectOffset=index=>cards[index].offsetLeft-cards[0].offsetLeft;
+let projectOffsets = cards.map(card => card.offsetLeft - cards[0].offsetLeft);
+const projectOffset = index => projectOffsets[index];
 function nearestProject(left=carousel.scrollLeft){
   return cards.reduce((best,card,index)=>Math.abs(projectOffset(index)-left)<Math.abs(projectOffset(best)-left)?index:best,0);
 }
 function syncProject(index){
+  if (projectIndex === index) return;
   projectIndex=index;
   $('#project-count').textContent=`${String(index+1).padStart(2,'0')} / ${String(cards.length).padStart(2,'0')}`;
   $('.work').dataset.world=projects[index].world;
@@ -133,25 +145,12 @@ function interruptProjectScroll(){
   carousel.classList.remove('is-wheeling');
 }
 carousel.addEventListener('pointerdown',interruptProjectScroll,{passive:true});
-// A vertical mouse wheel travels through the rail; its ends return control to the page.
+// Keep the browser's native vertical scrolling; touch and horizontal wheel input scroll the rail.
 let projectWheelTimer;
-carousel.addEventListener('wheel',event=>{
-  if(event.ctrlKey)return;
-  if(event.shiftKey||Math.abs(event.deltaX)>Math.abs(event.deltaY)||!event.deltaY){interruptProjectScroll();return;}
-  const delta=event.deltaY*(event.deltaMode===1?20:event.deltaMode===2?carousel.clientWidth:1);
-  const max=carousel.scrollWidth-carousel.clientWidth;
-  if(max<1||(delta<0&&carousel.scrollLeft<=1)||(delta>0&&carousel.scrollLeft>=max-1))return;
-  event.preventDefault();
-  projectDestination=null;
-  carousel.classList.add('is-wheeling');
-  projectWheelTarget=Math.max(0,Math.min(max,(projectWheelTarget??carousel.scrollLeft)+delta));
-  carousel.scrollTo({left:projectWheelTarget,behavior:motionOff?'instant':'smooth'});
-  clearTimeout(projectWheelTimer);
-  projectWheelTimer=setTimeout(()=>{
-    selectProject(nearestProject(projectWheelTarget??carousel.scrollLeft));
-  },240);
-},{passive:false});
-window.addEventListener('resize',()=>selectProject(projectIndex,true));
+window.addEventListener('resize', () => {
+  projectOffsets = cards.map(card => card.offsetLeft - cards[0].offsetLeft);
+  selectProject(Math.max(0, projectIndex), true);
+});
 selectProject(0,true);
 $('.engagement-grid').innerHTML=engagements.map((e,i)=>`<article class="engagement-card" id="engagement-${i}"><span class="engagement-number">${String(i+1).padStart(2,'0')} / ${e.role}</span><h3>${e.title}</h3><p>${e.text}</p><div class="project-tags">${tagMarkup(e.tags)}</div></article>`).join('');
 $('.contract-list').innerHTML=contracts.map(c=>`<article class="contract"><div><span class="contract-status"><i class="live-dot"></i>${c.type} · ${c.date}</span><h3>${c.title}</h3><p>${c.copy}</p>${c.sourceName?`<small class="contract-source">Published in ${c.sourceName}’s Upwork history · shared work</small>`:''}</div><div class="project-tags">${tagMarkup(c.tags)}</div><a href="${c.source||'https://www.upwork.com/freelancers/~011af220bdfdcacc6f'}" target="_blank" rel="noopener noreferrer" aria-label="View ${c.title} on Upwork">↗</a></article>`).join('');
@@ -165,6 +164,7 @@ function showGallery(index){
   $('#gallery-caption').textContent=`${galleryIndex+1} / ${openedProject.images.length} · ${shot.caption}`;
 }
 function openProject(id){
+  if (dialog.open) return;
   openedProject=projects.find(p=>p.id===id);if(!openedProject)return;
   returnFocus=document.activeElement;
   dialog.dataset.world=openedProject.world;
@@ -186,7 +186,7 @@ function openProject(id){
   $('.gallery-controls').hidden=!openedProject.images;
   if(openedProject.images){showGallery(0);$('#gallery-prev').disabled=$('#gallery-next').disabled=openedProject.images.length<2;}
   else $('.dialog-image-wrap').innerHTML=visualMarkup(openedProject);
-  document.body.classList.add('viewer-open');dialog.showModal();dialog.scrollTop=0;
+  document.body.classList.add('viewer-open');dialog.showModal();dialog.scrollTop=0;$('.dialog-close').focus({preventScroll:true});
 }
 $$('[data-open]').forEach(b=>b.addEventListener('click',()=>openProject(b.dataset.open)));
 $('.dialog-close').addEventListener('click',()=>dialog.close());
@@ -199,9 +199,12 @@ dialog.addEventListener('keydown',e=>{if(openedProject.images&&['ArrowLeft','Arr
 $('.year-nav').innerHTML=chapters.map((ch,i)=>`<button data-chapter="${i}"><span>${ch.year}</span><small>${ch.label}</small></button>`).join('');
 $('.journey-accessible').innerHTML=chapters.map(ch=>`<h3>${ch.date} — ${ch.label}</h3><p>${ch.text}</p>`).join('');
 $('.journey').style.setProperty('--chapter-count',chapters.length);
+const compactJourney = window.matchMedia('(max-width: 640px), (max-height: 760px)');
 let activeChapter=-1;
 function showChapter(i){
-  if(i===activeChapter)return;activeChapter=i;
+  if(i===activeChapter)return;
+  for (const element of [$('.chapter-copy'), $('.journey-visual')]) element.getAnimations().forEach(animation => animation.cancel());
+  activeChapter=i;
   const ch=chapters[i],project=projects.find(p=>p.id===ch.project);
   const world=project?.world||ch.world;
   const sticky=$('.journey-sticky');sticky.dataset.world=world;
@@ -216,7 +219,7 @@ function showChapter(i){
   $$('.year-nav button').forEach((b,n)=>{b.classList.toggle('active',n===i);if(n===i)b.setAttribute('aria-current','step');else b.removeAttribute('aria-current');});
   const nav=$('.year-nav'),button=$$('.year-nav button')[i];
   nav.scrollTo({left:button.offsetLeft-nav.clientWidth/2+button.clientWidth/2,behavior:motionOff?'instant':'smooth'});
-  if(!motionOff){$('.chapter-copy').animate([{opacity:0,transform:'translateY(16px)'},{opacity:1,transform:'translateY(0)'}],{duration:550,easing:'ease-out'});$('.journey-visual').animate([{opacity:0,transform:'translateY(30px) scale(.95)'},{opacity:1,transform:'translateY(0) scale(1)'}],{duration:750,easing:'ease-out'});}
+  if(!motionOff){$('.chapter-copy').animate([{opacity:0,transform:'translateY(16px)'},{opacity:1,transform:'translateY(0)'}],{duration:380,easing:'cubic-bezier(.22,1,.36,1)'});$('.journey-visual').animate([{opacity:0,transform:'translateY(30px) scale(.95)'},{opacity:1,transform:'translateY(0) scale(1)'}],{duration:520,easing:'cubic-bezier(.22,1,.36,1)'});}
 }
 let scrollPending=false;
 function updateScroll(){
@@ -224,11 +227,15 @@ function updateScroll(){
   $('.scroll-progress').style.transform=`scaleX(${max>0?scrollY/max:0})`;
   const j=$('.journey'),r=j.getBoundingClientRect();
   const p=Math.max(0,Math.min(1,-r.top/Math.max(1,j.offsetHeight-innerHeight)));
-  showChapter(Math.min(chapters.length-1,Math.floor(p*chapters.length)));
-  $('.timeline-meter span').style.transform=`scaleX(${p})`;scrollPending=false;
+  if (!compactJourney.matches && r.bottom > 0 && r.top < innerHeight) showChapter(Math.min(chapters.length-1,Math.floor(p*chapters.length)));
+  $('.journey-top > span').textContent = compactJourney.matches ? 'CHOOSE A CHAPTER BELOW ↔' : 'SCROLL THROUGH THE CHAPTERS ↓';
+  $('.timeline-meter span').style.transform=`scaleX(${compactJourney.matches ? (activeChapter+1)/chapters.length : p})`;scrollPending=false;
 }
 window.addEventListener('scroll',()=>{if(!scrollPending){requestAnimationFrame(updateScroll);scrollPending=true;}},{passive:true});
-$$('.year-nav button').forEach((b,i)=>b.addEventListener('click',()=>{const j=$('.journey');window.scrollTo({top:j.getBoundingClientRect().top+scrollY+(j.offsetHeight-innerHeight)*(i+.35)/chapters.length,behavior:motionOff?'instant':'smooth'});}));
+$$('.year-nav button').forEach((b,i)=>b.addEventListener('click',()=>{if(compactJourney.matches){showChapter(i);$('.timeline-meter span').style.transform=`scaleX(${(i+1)/chapters.length})`;return;}const j=$('.journey');window.scrollTo({top:j.getBoundingClientRect().top+scrollY+(j.offsetHeight-innerHeight)*(i+.35)/chapters.length,behavior:motionOff?'instant':'smooth'});}));
+showChapter(0);
+compactJourney.addEventListener('change', updateScroll);
+window.addEventListener('resize', () => { if (!scrollPending) { scrollPending = true; requestAnimationFrame(updateScroll); } });
 updateScroll();
 
 // Browse the verified toolbox without changing the page's scroll position.
@@ -279,3 +286,26 @@ updateTrustedMotion();
 // A project URL opens its complete record for sharing and direct navigation.
 const linkedProject=new URLSearchParams(location.search).get('project');
 if(linkedProject&&projects.some(project=>project.id===linkedProject))openProject(linkedProject);
+
+// Optional decoration rests offscreen and in background tabs; core content is always available.
+const effectRoots = $$('.hero, .trusted, .project-card, .journey-sticky, .about-photo, .toolbox-orbit');
+const effectsObserver = new IntersectionObserver(entries => {
+  entries.forEach(entry => entry.target.classList.toggle('effects-resting', !entry.isIntersecting));
+}, {rootMargin:'80px'});
+effectRoots.forEach(element => effectsObserver.observe(element));
+function updatePageEffects() {
+  document.body.classList.toggle('page-hidden', document.hidden);
+  document.body.classList.toggle('reduced-effects', !!navigator.connection?.saveData);
+}
+document.addEventListener('visibilitychange', updatePageEffects);
+navigator.connection?.addEventListener('change', updatePageEffects);
+updatePageEffects();
+// Image failures must leave the contribution, captions and source links usable.
+document.addEventListener('error', event => {
+  const image = event.target;
+  if (!(image instanceof HTMLImageElement) || !image.closest('.dialog-image-wrap')) return;
+  const message = document.createElement('p');
+  message.className = 'asset-fallback';
+  message.textContent = 'This image could not load. You can still read the project details and visit its source.';
+  image.replaceWith(message);
+}, true);
